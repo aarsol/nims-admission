@@ -331,9 +331,9 @@
                        <div class="mb-1 col-md-12 ml-2 mb-0">
                            <hr class='mt-0 mb-0'/>
                         </div>
-                            <div class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else 'display:block' }}">
+                            <div class="mb-1 col-md-4 pb-2">
                                 <t t-set="disabled_persons" t-value="dict(application_id.fields_get(allfields=['disabled_person'])['disabled_person']['selection'])"/>
-                                <select required="1" class="form-control inputText" id="disabled_person" name="disabled_person">
+                                <select  onchange="on_change_is_any_disability()" required="1" class="form-control inputText" id="disabled_person" name="disabled_person">
                                     <option selected='1' value=''>Select</option>
                                     <t t-foreach="disabled_persons" t-as="special_p">
                                         <option t-att-selected='special_p==application_id.disabled_person' t-att-value="special_p">
@@ -343,6 +343,11 @@
                                 </select>
                                 <label class='floating-label' for="disabled_person">Are you special person?</label>
                             </div>
+                        <div class="mb-1 col-md-8" id="disability_div" t-attf-style="{{'display:block' if application_id.disabled_person=='yes' else 'display:none' }}">
+                            <input id="disabled_person_detail" name='disabled_person_detail' required="1" t-att-value='application_id.disabled_person_detail' type="text"  class="form-control inputText" />
+                            <span class="floating-label-norequired">Detail Description</span>
+                        </div>
+
                          <div class="mb-1 col-md-12 ml-2 mb-0">
                            <hr class='mt-0 mb-0'/>
                         </div>
@@ -350,7 +355,7 @@
 
                             <div class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else 'display:block' }}">
                                 <t t-set="first_in_family_list" t-value="dict(application_id.fields_get(allfields=['first_in_family'])['first_in_family']['selection'])"/>
-                                <select required="1" class="form-control inputText" id="first_in_family" name="first_in_family">
+                                <select required="1" onchange="on_change_first_in_family()" class="form-control inputText" id="first_in_family" name="first_in_family">
                                     <option selected='1' value=''>Select</option>
                                     <t t-foreach="first_in_family_list" t-as="first_in_family">
                                         <option t-att-selected='first_in_family==application_id.first_in_family' t-att-value="first_in_family">
@@ -360,22 +365,31 @@
                                 </select>
                                 <label class='floating-label' for="father_status">Are you first in your family applying for university degree?</label>
                             </div>
+                        <div class="mb-1 col-md-8" id="first_in_family_detail_div" t-attf-style="{{'display:block' if application_id.first_in_family=='no' else 'display:none' }}">
+                            <input id="first_in_family_detail" name='first_in_family_detail' required="1" t-att-value='application_id.first_in_family_detail' type="text"  class="form-control inputText" />
+                            <span class="floating-label-norequired">Family Education Details</span>
+                        </div>
                         <div class="mb-1 col-md-12 ml-2 mb-0">
                            <hr class='mt-0 mb-0'/>
                         </div>
 
                             <div class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.father_status=='deceased' else 'display:block' }}">
                                 <t t-set="diseases" t-value="dict(application_id.fields_get(allfields=['disease'])['disease']['selection'])"/>
-                                <select required="1" class="form-control inputText" id="disease" name="disease">
+                                <select required="1" onchange="on_change_disease()" class="form-control inputText" id="disease_ddl" name="disease_ddl">
                                     <option selected='1' value=''>Select</option>
-                                    <t t-foreach="diseases" t-as="disease">
-                                        <option t-att-selected='desease==application_id.disease' t-att-value="disease">
-                                            <t t-esc="disease_value"/>
+                                    <t t-foreach="diseases" t-as="disease_v">
+                                        <option t-att-selected='disease_v==application_id.disease' t-att-value="disease_v">
+                                            <t t-esc="disease_v_value"/>
                                         </option>
                                     </t>
                                 </select>
                                 <label class='floating-label' for="father_status">Do you have any chronical disease?</label>
                             </div>
+
+                        <div class="mb-1 col-md-8" id="disease_details_div" t-attf-style="{{'display:block' if application_id.disease=='yes' else 'display:none' }}">
+                            <input id="disease_details" name='disease_details' required="1" t-att-value='application_id.disease_details' type="text"  class="form-control inputText" />
+                            <span class="floating-label-norequired">Disease Details</span>
+                        </div>
 
 
 

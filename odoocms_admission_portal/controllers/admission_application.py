@@ -168,8 +168,11 @@ class RegisterApplication(Controller):
                         'brothers': kw.get('brothers') or '',
                         'mother_status': kw.get('mother_status') or '',
                         'disabled_person': kw.get('disabled_person') or '',
-                        'first_in_family_list': kw.get('first_in_family_list') or '',
-                        'disease': kw.get('disease') or '',
+                        'disabled_person_detail': kw.get('disabled_person_detail') or '',
+                        'first_in_family': kw.get('first_in_family') or '',
+                        'first_in_family_detail': kw.get('first_in_family_detail') or '',
+                        'disease': kw.get('disease_ddl') or '',
+                        'disease_details': kw.get('disease_details') or '',
                         'sat_score': kw.get('sat_score') or '',
                         'religion_id': int(kw.get('religion_id')) if kw.get('religion_id') else False,
                         'nationality': int(kw.get('nationality')) if kw.get('nationality') else False,
@@ -321,7 +324,7 @@ class RegisterApplication(Controller):
                         {k: v for k, v in academic_data.items() if v != ''})
                     academic_add = application.applicant_academic_ids.create(
                         form_data)
-                    application.education_consent = True
+                    application.write({'education_consent' : True})
                     if kw.get('subject_marks'):
                         subject_marks = json.loads(kw.get('subject_marks'))
                         if subject_marks != {}:

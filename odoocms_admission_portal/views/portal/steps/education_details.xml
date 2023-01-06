@@ -89,7 +89,7 @@
                         </div>
                          <t t-if="application_id.state=='draft'">
                 <div  class="form-check mt-2 ml-3">
-                    <input class="form-check-input" type="checkbox" value="" id="education_consent" name="education_consent"/>
+                    <input class="form-check-input" type="checkbox" value="" t-att-checked="application_id.education_consent" id="education_consent" name="education_consent"/>
                     <label class="form-check-label" for="education_consent">I certify that the academic information provided above is accurate,
                         complete and honestly presented by me. Misleading or incorrect information would result in refusal of admission at any stage.
                     </label>

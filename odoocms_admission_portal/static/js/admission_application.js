@@ -161,12 +161,9 @@ function delete_education(param) {
 function delete_preference(param) {
     $(param).parents('li').remove()
     count = 1
-
     $('.program_count').each(function (index, element) {
         $(element).find('.count_preference').text(count);
-
         if ($('#sortable_program_list').find('li').length > 0) {
-
             if (count = 1) {
                 let preferenceTestId = $(element).attr('pretest_id')
                 let preTestName = `${$(element).attr('pretest_name')}`
@@ -179,10 +176,7 @@ function delete_preference(param) {
                     $('#pretest_div').hide();
                 }
             }
-
         }
-
-
         count += 1
     })
 
@@ -233,8 +227,7 @@ function profileImageUpdate(input) {
                 $('#alert_show_button').click();
                 // $('#message_popup').show()
             },
-            error: function (response) {
-            }
+            error: function (response) {}
         });
     }
 }
@@ -249,18 +242,53 @@ function image_preview_func(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+function on_change_is_any_disability() {
+    if ($('#disabled_person').find(":selected").val() == 'yes')
+        {
+         $("#disability_div").css("display", "block");
+         $("#disabled_person_detail").attr("required", "1");
 
+        }
+    else{
+        $("#disability_div").css("display", "none");
+        $("#disabled_person_detail").attr("required", "0");
+    }
+
+}
+function on_change_first_in_family() {
+    if ($('#first_in_family').find(":selected").val() == 'no')
+        {
+         $("#first_in_family_detail_div").css("display", "block");
+         $("#first_in_family_detail").attr("required", "1");
+
+        }
+    else{
+        $("#first_in_family_detail_div").css("display", "none");
+        $("#first_in_family_detail").attr("required", "0");
+    }
+
+}
+function on_change_disease() {
+    if ($('#disease_ddl').find(":selected").val() == 'yes')
+        {
+         $("#disease_details_div").css("display", "block");
+         $("#disease_details").attr("required", "1");
+
+        }
+    else{
+        $("#disease_details_div").css("display", "none");
+        $("#disease_details").attr("required", "0");
+    }
+
+}
 function apply_application() {
 
     let confirmAction = confirm("You Can Not Change Any Thing After Submit Application.");
     if (confirmAction) {
-
-
         $.get("/apply/application/",
             function (data, textStatus) {
                 data = JSON.parse(data);
                 if (data['status'] == 'noerror') {
-
                     $('#message_popup_text').text(data['msg'])
                     $('#toast_body_alert').text(data['msg'])
                     $('#toast_body_alert').css({ 'color': 'green' })
@@ -865,10 +893,10 @@ $(document).ready(function () {
     }
 
     // nutech
-    if ($('#fee_voucher_state_suffa').val() != 'no') {
+    if ($('#fee_voucher_state').val() != 'no') {
         $('#fee_button').hide()
     }
-    if ($('#fee_voucher_state_suffa').val() == 'no') {
+    if ($('#fee_voucher_state').val() == 'no') {
         $('#fee_voucher_form').parent().hide();
         $('#fee_button').show()
     }

@@ -10,7 +10,8 @@
             <a class="btn btn-link"><i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i><h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/></h2></a>
             <a><i id='fee_voucher_dropdpown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i></a>
         </div>
-        <div id="fee_voucher_div" class="row container-fluid mt-3 collapse_div">
+        <div id="fee_voucher_div" class="row container-fluid mt-3 ">
+         <!--   <div id="fee_voucher_div" class="row container-fluid mt-3 collapse_div">-->
             <!-- <t t-if="fee_voucher_state==verify">
                 <label style='color:red'>Fee Verified</label>
             </t> -->
@@ -21,7 +22,7 @@
             <!--</div>-->
             <br/>
             <t t-if="application_id.fee_voucher_state != 'verify'">
-                <div class='col-8' t-att-style="'display:none' if fee_voucher_state == 'no' else 'display:block'">
+                <div class='col-8'>
                     <form id='fee_voucher_form' class="row g-3">
                         <input type='hidden' name='step_name' value='fee_voucher'></input>
                         <input type="hidden" id='step_no_voucher' name="step_no" t-att-value='counter_step' />
@@ -128,7 +129,7 @@
                         </div>
                         <div class="row">
                             <div class="col col-4" style="font-weight:bold">
-                                <span>Student Name</span>
+                                <span>Applicant Name</span>
                             </div>
                             <div class="col col-8" style="text-align:center">
                                 <div style="border-bottom:1px solid #ddd;">
