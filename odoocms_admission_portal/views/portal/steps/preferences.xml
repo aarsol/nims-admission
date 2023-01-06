@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <template id="register_preference" name="Admission Prefernces">
+    <script>
+ 
+    </script>
+
+    <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#admission_preference').slideToggle(1000); $('#preference_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+      <a class="btn btn-link">
+        <i style='color: white;font-size: 25px;' class="fa-solid fa-list-check float-left"></i>
+        <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+        </h2>
+      </a>
+      <a >
+        <i id='preference_dropdown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+      </a>
+    </div>
+    <div id="admission_preference" class="row container-fluid mt-3 collapse_div">
+      <br/>
+      <input t-att-value='application_id.register_id.preferences_allowed' name='preference_allowed' id='preference_allowed' type='hidden' />
+      <div class='col-6'>
+        <button id='view_offered_program_button' t-attf-style="border:None; {{'pointer-events: none;' if application_id.state != 'draft' else '' }}" class="btn btn-primary px-5" type="button" data-toggle="collapse" data-target="#discipline_collapse" aria-expanded="false" aria-controls="discipline_collapse">
+        View Offered Program</button>
+
+        <div class="collapse" id="discipline_collapse">
+
+          <div class="row">
+            <!-- <div id='discpline_div' class="col-4">
+              <ul id='discipline_list' class="list-group">
+                <li style='pointer-events: none;color:whitesmoke;background-color:#875A7B;' class="list-group-item">
+                  Choose Discipline:
+                </li>
+
+              </ul>
+            </div> -->
+
+            <div id='program_div' style='display: contents'>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!--  -->
+      </div>
+
+
+      <div class='col-5'>
+
+        <h3>My Preferences</h3>
+        <hr/>
+        <span>Click &amp; Drag To Reorder</span>
+        <ul id="sortable_program_list" class="list-group">
+          <t t-set="count" t-value="1"/>
+          <input type='hidden' id='step_preference_name' name='step_name' value='preference'></input>
+          <input type="hidden" id='step_preference_no' name="step_no" t-att-value='counter_step' />
+          <t t-foreach="application_id.preference_ids" t-as="pref">
+            <li t-att-id='pref.program_id.id' t-att-pretest_id='pref.program_id.id' t-att-pretest_name="pref.program_id.pre_test.name if pref.program_id.pre_test else 'no_pretest'" class='list-group-item d-flex justify-content-between align-items-start border program_count'>
+              <div>
+                <i class="fas fa-expand-arrows-alt mr-1"></i>
+                <t t-esc="pref.program_id.name"/>
+              </div>
+              <div >
+                <span class='badge badge-primary badge-pill count_preference'>
+                  <t t-esc="count"/>
+                </span>
+                <span onclick='delete_preference(this)' class='delete_preference'>
+                  <i class="fas fa-trash-alt ml-1"></i>
+                </span>
+              </div>
+            </li>
+            <t t-set="count" t-value="count+1"/>
+          </t>
+        </ul>
+        <br/>
+      </div>
+
+
+      <div>
+        <div id='pretest_div' t-attf-style="{{'' if application_id.pre_test_marks else 'display:none' }}" class="col-6">
+          <div class="col-11 mt-2">
+            <!-- <label for="pretest" class="form-label">Pre Test:</label> -->
+            <div class="form-check">
+              <input class="form-check-input" t-att-checked=" 1 if application_id.pre_test_marks else 0 " type="checkbox" value="" id="pretest_check"/>
+              <label class="form-check-label" for="pretest_check">
+                Pre Test :
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mb-1 col-md-6">
+              <select style='pointer-events:none' readonly="1" class="form-control inputText" id="pretest" name="pretest">
+                <t t-if="application_id.pre_test_id">
+                  <option selected='1'>
+                    <t t-esc="application_id.pre_test_id.name"/>
+                  </option>
+                </t>
+              </select>
+            </div>
+            <div class="mb-1 col-md-5">
+              <input required="True" t-att-value='application_id.pre_test_marks' class="form-control validate_number" type="text" name="pre_test_marks" id="pre_test_marks"/>
+              <span for="pre_test_marks" class="floating-label ">Pre Test Marks*</span>
+            </div>
+          </div>
+        </div>
+        <button id='preference_update' t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary float-right">Update</button>
+      </div>
+    </div>
+    <br/>
+
+  </template>
+</odoo>

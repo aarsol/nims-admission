@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_student_admit_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <header>
+                            <div class="row">
+                                <div class="col-12 mt-3" style="text-align: center">
+                                    <img src='/odoocms_admission_nutech/static/src/img/nutech.png'
+                                         style="max-width: 120px; height: 100px;" alt="logo"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h5>
+                                        <b>University of Central Punjab</b>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center">
+                                    <h6>
+                                        <b>Lahore</b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <b>www.nutech.edu.pk</b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="text-align: center; font-size: 13px;">
+                                    <span>
+                                        <p>1 - Khayaban-e-Jinnah Road, Johar Town, Lahore.(0800-00287)</p>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row"
+                                 style="text-align: center; border: 1px solid black; height: 20px; background-color: black; color: white;">
+                                <div class="col-12">
+                                    <h6 style="font-color: white;">
+                                        <b>ADMISSION TEST/INTERVIEW LETTER</b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-3" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <h6>
+                                        <b>
+                                            Date:
+                                        </b>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                Ref No.:
+                                            </b>
+                                        </h6>
+                                        <h6>
+                                            <b>
+                                                Name:
+                                            </b>
+                                        </h6>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                <nobr>
+                                                    Subject: Schedule of Admission Test/Interview-
+                                                    <t t-as="o.student_id.register_id.name"/>
+                                                </nobr>
+                                            </b>
+                                        </h6>
+                                    </h6>
+                                </div>
+                                <div class="col-2">
+                                    <h6>
+                                        <b>
+                                            <span t-esc="(datetime.date.today())"/>
+                                        </b>
+                                        <br/>
+                                        <h6>
+                                            <b>
+                                                <span t-esc="o.student_id.application_no"/>
+                                            </b>
+                                        </h6>
+                                        <h6>
+                                            <b>
+                                                <span t-esc="o.student_id.name"/>
+                                            </b>
+                                        </h6>
+                                    </h6>
+                                </div>
+                                <div class="col-7" style="text-align: right;">
+                                    <span>
+                                        <img id="profile_image"
+                                             t-att-src="'data:image/png;base64,%s' % to_text(o.student_id.image)"
+                                             width="100px" height="120"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <h6>
+                                        <b>
+                                            <nobr>
+                                                Dear Applicant,
+                                            </nobr>
+                                        </b>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12">
+                                    <h6>
+                                        <p style="text-align: justify;">
+                                            Thank you for submitting your online application for admission in
+                                            <span>
+                                                <t t-esc="o.entry_test_schedule_details_id.program_id.name"/>
+                                            </span>
+                                            at the University of Central Punjab.
+                                        </p>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12">
+                                    <h6>
+                                        <p style="text-align: justify;">
+                                            The schedule for your admission test is given below:-
+                                        </p>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <span>
+                                        Test Date:
+                                    </span>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <span>
+                                        <t t-esc="o.date"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <span>
+                                        Test Time:
+                                    </span>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <span>
+                                        <t t-esc="o.slots.name"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <span>
+                                        Test Venue:
+                                    </span>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <span>
+                                        <t t-esc="o.room.name"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <span>
+                                        <nobr>
+                                            Username for Test:
+                                        </nobr>
+                                    </span>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <span>
+                                        <t t-esc="o.student_id.application_no"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-2" style="text-align: left;">
+                                    <span>
+                                        <nobr>
+                                            Password for Test:
+                                        </nobr>
+                                    </span>
+                                </div>
+                                <div class="col-2" style="text-align: right;">
+                                    <span>
+                                        <t t-esc="o.cbt_password"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="margin-left: 20px;">
+                                <div class="col-12" style="text-align: left;">
+                                    <p>
+                                        <t t-raw="o.entry_test_schedule_details_id.program_id.test_admit_card"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
