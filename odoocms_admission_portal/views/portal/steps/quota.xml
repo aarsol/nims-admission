@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="quotas" name="Nutech Quota Step">
+
+        <!-- Second Page Contact   -->
+        <!-- <div class='container-fluid mb-3'> -->
+        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#quotacollapse').slideToggle(1000); $('#quota_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-address-card float-left"></i>
+                <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+                </h2>
+            </a>
+            <a>
+                <i id='quota_dropdown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+
+        <div id="quotacollapse" class="row container-fluid mt-3 collapse_div">
+            <br/>
+
+            <div class='col-8'>
+                
+                <form id='quota_form' class="row g-3">
+                    <input type="hidden" name="step_no" t-att-value='counter_step' />
+                    <!--<input type='hidden' name='step_name' value='scholarship'/>-->
+                    <input type='hidden' name='step_name' value='quota'/>
+
+
+                    <!-- geting email ,home phone and mobile  -->
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <h4 class='mt-3 mb-0'>Quota Based Admission</h4>
+                        <hr class='mt-0 mb-0'></hr>
+                    </div>
+                    <div class="mb-1 col-md-12 pb-2 mt-2">
+                        <t t-set="forces_quota_list" t-value="dict(application_id.fields_get(allfields=['forces_quota'])['forces_quota']['selection'])"/>
+                        <select onclick="on_change_is_forces_quota()" class="form-control inputText" id="forces_quota" name="forces_quota">
+                            <option selected='1' disabled='1' value=''>Select</option>
+                            <t t-foreach="forces_quota_list" t-as="quota">
+                                <option t-att-selected="quota == application_id.forces_quota" t-att-value="quota">
+                                    <t t-esc="quota_value"/>
+                                </option>
+                            </t>
+                        </select>
+                        <label class='floating-label' for="forces_quota">Do you want to apply for admission against seats reserved for wards of Armed Forces Personnel (Serving / Retired / Shuhada)?</label>
+                    </div>
+
+                            <div id='forces_quota_div' class="mb-1 col-md-12 pb-2" t-attf-style="{{'display:none' if application_id.forces_quota=='no' else 'display:block' }}">
+                                    <select class="form-control" select='1'  id="forces_quota_details" name="forces_quota_details">
+                                        <option value='' disabled='1' selected='1'>Select Force</option>
+                                    <option value="army" t-att-selected="application_id.forces_quota_details == 'army'">Army
+                                    </option>
+                                    <option value="air force" t-att-selected="application_id.forces_quota_details == 'air force'">Air Force
+                                    </option>
+                                    <option value="navy" t-att-selected="application_id.forces_quota_details == 'navy'">Navy
+                                    </option>
+                                </select>
+                                <label class='floating-label' for="forces_quota_details">Kindly apply separately
+                                for the same to GHQ, NHQ or AHQ accordingly.</label>
+                        </div>
+
+
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+                    <div class="mb-1 col-md-12 pb-2 mt-2">
+                        <t t-set="rural_quota_list" t-value="dict(application_id.fields_get(allfields=['rural_quota'])['rural_quota']['selection'])"/>
+                        <select onclick="on_change_is_rural_quota()" class="form-control inputText" id="rural_quota" name="rural_quota">
+                            <option selected='1' disabled='1' value=''>Select</option>
+                            <t t-foreach="rural_quota_list" t-as="rquota">
+                                <option t-att-selected="rquota == application_id.rural_quota" t-att-value="rquota">
+                                    <t t-esc="rquota_value"/>
+                                </option>
+                            </t>
+                        </select>
+                        <label class='floating-label' for="rural_quota">Do you want to apply for admission against seats reserved for backward / less developed areas of Pakistan?</label>
+                    </div>
+                         <div id='rural_quota_div' class="mb-1 col-md-12 pb-2" t-attf-style="{{'display:none' if application_id.rural_quota=='no' else 'display:block' }}">
+                                 <select class="form-control" select='1'  id="rural_quota_details" name="rural_quota_details">
+                                    <option value='' disabled='1' selected='1'>Select Area*</option>
+                                    <option value="balochistan">Balochistan Rural</option>
+                                    <option value="sindh" t-att-selected="application_id.rural_quota_details == 'sindh'">Sindh Rural</option>
+                                    <option value="GB" t-att-selected="application_id.rural_quota_details == 'GB'">GB</option>
+                                    <option value="aj&amp;k" t-att-selected="application_id.rural_quota_details == 'aj&amp;k'">AJ&amp;K</option>
+                                    <option value="kptd" t-att-selected="application_id.rural_quota_details == 'kptd'">KPTD</option>
+                                </select>
+                                <label class='floating-label' for="rural_quota_details">Backward/Less developed Areas*</label>
+                        </div>
+
+
+                    <div class="col-12">
+                        <input type="submit" style='display: none;' class="btn btn-primary"/>
+                    </div>
+                </form>
+                <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update/Skip</button>
+            </div>
+            <div class='col-4'>
+
+            </div>
+        </div>
+        <br/>
+
+        <!-- </div> -->
+    </template>
+</odoo>

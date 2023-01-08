@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="test_center_nutech" name="Test Center Nutech">
+
+        <div class="ml-3 mr-3  header_tab diable_header_tab mt-0 p-2 " onclick="$('#test_center_div').slideToggle(1000); $('#test_center_dropdown').toggleClass('fa-angle-down fa-angle-up');">
+            <a class="btn btn-link">
+                <i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i>
+                <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
+                </h2>
+
+            </a>
+            <a >
+                <i id='test_center_dropdown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
+            </a>
+        </div>
+
+        <div id="test_center_div" class="row container-fluid mt-3 collapse_div">
+            <div class='col-8'>
+
+                <form id='entry_test_form' class="row g-3">
+                    <input type="hidden" name="step_no" t-att-value='counter_step' />
+                    <!--<input type='hidden' name='step_name' value='scholarship'/>-->
+                    <input type='hidden' name='step_name' value='entry_test_center'/>
+
+
+                    <!-- geting email ,home phone and mobile  -->
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <h4 class='mt-3 mb-0'>Entry Test Center</h4>
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+                    <div class="mb-1 col-md-12 pb-2 mt-2">
+                        <input t-if="application_id.center_id" type="hidden" id="selected_center_id"
+                                               t-att-value="application_id.center_id.id"/>
+
+                        <select  name="test_center" id="test_center"
+                                                    t-att-disabled="application_id.confirm_test_center"
+                                                    onchange="on_change_test_center(cent_id= this.value)"
+                                                    required="1" class="form-control inputText">
+                            <option selected='1' disabled='1' value=''>Select</option>
+                            <t t-foreach="test_center_ids" t-as="test_center">
+                                                    <t t-foreach="test_center" t-as="test_center_disc">
+                                                        <option t-att-value="test_center_disc.id"
+                                                                t-att-selected="application_id.center_id.id == test_center_disc.id">
+                                                            <t t-esc="test_center_disc.name"/>
+                                                        </option>
+                                                    </t>
+                                                </t>
+
+                        </select>
+                        <label class='floating-label' for="test_center">Select Center</label>
+                    </div>
+
+                    <div id="test_schedule_div" >
+                <p id="pbt"/>
+                <div id="cbt">
+                                                <t t-foreach="test_center_ids" t-as="test_center">
+                                                    <t t-foreach="test_center" t-as="test_center_disc">
+                                                        <div>
+                                                            <b>
+                                                                <t t-if="application_id.center_id.id == test_center_disc.id">
+                                                                    <t t-if="test_center_disc.test_type == 'cbt'">
+                                                                        Computer Based Entry Test
+                                                                    </t>
+                                                                    <t t-if="not test_center_disc.test_type == 'cbt'">
+                                                                        Paper Based Entry Test
+                                                                    </t>
+                                                                </t>
+                                                            </b>
+                                                        </div>
+
+                                                        <t t-foreach="test_center_disc.select_slots(application_id)" t-as="time">
+
+
+                                                            <br/>
+                                                            <div>
+                                                             <!-- <t t-if="student.slot_id.id == time['id'] and student.center_id.id == test_center_disc.id">-->
+                                                                <input type="radio" required="true"
+                                                                       t-att-disabled="application_id.confirm_test_center"
+                                                                       t-if="time['id'] in selected_slots"
+                                                                       checked="true"
+                                                                       t-att-value="time['id']"
+                                                                       t-attf-name="test_timing_{{time['discipline'].id}}" t-attf-id="time_{{time['id']}}">
+                                                                    Test Date:
+                                                                    <t t-esc="time['date']"/>
+                                                                    Time:
+                                                                    <t t-esc="time['time']"/>
+                                                                    Discipline:
+                                                                    <t t-esc="time['discipline'].name"/>
+                                                                </input>
+                                                              <!--</t>-->
+                                                                <br/>
+                                                                <t t-if="not application_id.slot_id.id == time['id'] and application_id.center_id.id == test_center_disc.id">
+                                                                    <input type="radio" required="true"
+                                                                           t-att-disabled="application_id.confirm_test_center"
+                                                                           t-att-value="time['id']"
+                                                                           t-if="not time['id'] in selected_slots"
+                                                                           t-attf-name="test_timing_{{time['discipline'].id}}"
+                                                                           t-attf-id="time_{{time['id']}}">Test Date:
+                                                                        <t t-esc="time['date']"/>
+                                                                        Time:
+                                                                        <t t-esc="time['time']"/>
+                                                                        Discipline:
+                                                                        <t t-esc="time['discipline'].name"/>
+                                                                    </input>
+                                                                    <br/>
+                                                                </t>
+                                                            </div>
+
+                                                            <!--<div>
+                                                                <input type="radio" required="true"
+                                                                       t-att-disabled="student.confirm_test_center"
+                                                                       t-if="student.slot_id.id == time['id']"
+                                                                       checked="true"
+                                                                       t-att-value="time['id']"
+                                                                       name='test_timing' t-attf-id="time_{{time['id']}}">
+                                                                    Test Date:
+                                                                    <t t-esc="time['date']"/>
+                                                                    Time:
+                                                                    <t t-esc="time['time']"/>
+                                                                    Discipline:
+                                                                    <t t-esc="time['discipline']"/>
+                                                                </input>
+                                                                <t t-if="not student.slot_id.id == time['id'] and student.center_id.id == test_center_disc.id">
+                                                                    <input type="radio" required="true"
+                                                                           t-att-disabled="student.confirm_test_center"
+
+                                                                           t-att-value="time['id']"
+                                                                           name='test_timing'
+                                                                           t-attf-id="time_{{time['id']}}">Test Date:
+                                                                        <t t-esc="time['date']"/>
+                                                                        Time:
+                                                                        <t t-esc="time['time']"/>
+                                                                        Discipline:
+                                                                        <t t-esc="time['discipline']"/>
+                                                                    </input>
+                                                                </t>
+                                                            </div>-->
+
+                                                        </t>
+                                                    </t>
+                                                </t>
+
+
+                                            </div>
+            </div>
+
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+
+
+
+
+
+                    <div class="col-12">
+                        <input type="submit" style='display: none;' class="btn btn-primary"/>
+                    </div>
+                </form>
+                <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update/Skip</button>
+            </div>
+            <div class='col-4'>
+
+            </div>
+
+            <div  class="container">
+                <br/>
+
+                <t t-if="admit_card">
+                    <t t-if="admit_card.slot_type=='test'">
+                        <a t-attf-href="/download/admit/{{'test'}}">
+                            <div class='col-3 m-1'>
+                                <button style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Downloand Test Letter</button>
+                            </div>
+                        </a>
+                    </t>
+                    <t t-elif="admit_card.slot_type=='interviewer'">
+                        <a t-attf-href="/download/admit/{{'interview'}}">
+                            <div class='col-3 m-1'>
+                                <button style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Downloand Interview Letter</button>
+                            </div>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <a t-attf-href="/download/admit/{{'test'}}">
+                            <button class="btn btn-primary ml-1">Downloand Admit Card</button>
+                        </a>
+                        <a t-attf-href="/download/admit/{{'interview'}}">
+                            <button class="btn btn-primary ml-1">Downloand Admit Card</button>
+                        </a>
+                    </t>
+                </t>
+                <t t-else="">
+                    <span style='color:red'>
+                    No Slot Assigned!
+                    </span>
+                </t>
+
+                <!-- <label class='form-label' for="religion">Testing Center</label> -->
+                <!-- <form id='center_selection_form'>
+                    <div class='row '>
+                        <input type="hidden" name="step_no" t-att-value='counter_step' />
+                        <input type='hidden' name='step_name' value='test_center'></input>
+                        <div class='col-3 m-1'>
+                            <button onclick="console.log(this)" style='background-color:#875A7B;border:None' class="btn btn-primary ml-1">Downloand</button>
+                        </div>
+                        
+                        <t t-if="center_id">
+                            <t t-set="test_center_skip" t-value="no"/>
+                            <div class="mb-1 col-md-6 ">
+                                <label class='form-label' for='test_center_id'>Testing Center</label>
+                                <select style='font-size:14px' class="form-control inputText" id="test_center_id" name="test_center_id">
+                                    <option disabled='1' selected='1' value='0'>Select Testing Center</option>
+                                    <t t-foreach="center_id" t-as="center">
+                                        <option t-att-selected='application_id.center_id.id==center.id' t-att-value="center.id">
+                                            <t t-esc="center.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-1 col-md-5 ">
+                                <label class='form-label' for='test_center_slot'>Test Slot</label>
+                                <select style='font-size:14px' class="form-control inputText" id="test_center_slot" name="test_center_slot">
+                                    <option>
+                                        <t t-esc="(list(application_id.slot_ids)[-1]).date"/>
+                                        <t t-esc="(list(application_id.slot_ids)[-1]).time if (list(application_id.slot_ids)[-1]).time != 0.0 else ''"/>
+                                    </option>
+                                </select>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <p>Please Skip This Step</p>
+                            <t t-set="test_center_skip" t-value="yes"/>
+                        </t>
+
+                    </div>
+                    <input style="display: none" type="submit" class="btn btn-primary "/>
+
+                </form>
+                <br/>
+                <t t-if="center_id">
+
+                    <button onclick="check_form_validation(this)" id='testing_center_update' style='background-color:#875A7B;border:None' class="btn btn-primary float-left">Update</button>
+                </t>
+                <t t-else="">
+                    <button onclick="check_form_validation(this)" id='testing_center_update' style='background-color:#875A7B;border:None' class="btn btn-primary float-left">Skip</button>
+                </t> -->
+            </div>
+
+        </div>
+        <br/>
+    </template>
+</odoo>
