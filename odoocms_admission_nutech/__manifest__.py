@@ -22,10 +22,11 @@
         'views/educational_institute.xml',
 
 
-        'views/entry_test_room_view.xml',
-        'views/entry_test_slots_view.xml',
-        'views/entry_test_schedule_view.xml',
-        'views/applicant_entry_test.xml',
+        # 'views/entry_test_room_view.xml',
+        # 'views/entry_test_slots_view.xml',
+        # 'views/entry_test_schedule_view.xml',
+        'views/test_schedule_nutech.xml',
+        # 'views/applicant_entry_test.xml',
         # 'views/Program_transfer_request.xml',
         # 'views/last_institute_attend_view.xml',
         'views/odoocms_advertisement_view.xml',

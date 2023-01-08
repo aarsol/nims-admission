@@ -69,7 +69,8 @@ class RegisterApplication(Controller):
 
         company = request.env['res.company'].sudo().search([])
         descipline_id = request.env['odoocms.discipline'].sudo().search([])
-        center_id = application_id.register_id.test_series_ids
+        # center_id = application_id.register_id.test_series_ids
+        center_id = False
         # last_institute_attend = request.env['last.institute.attend'].sudo().search([
         # ])
         advertisement = request.env['odoocms.advertisement'].sudo().search([])
@@ -77,6 +78,10 @@ class RegisterApplication(Controller):
         steps_id = request.env['odoocms.application.steps'].sudo().search(
             [], order='sequence')
 
+        test_center_ids = http.request.env['odoocms.admission.test.center'].sudo().search([])
+        selected_slots = []
+        for rec in application_id.slot_ids:
+            selected_slots.append(rec.id)
         # if not register_id:
         #     values = {
         #         'header': 'Admission Closed!',
@@ -116,6 +121,8 @@ class RegisterApplication(Controller):
             'board_id': board_id,
             'center_id': center_id,
             'application_id': application_id,
+            'test_center_ids': test_center_ids,
+            'selected_slots': selected_slots,
             'undertaking': undertaking,
             'degree_intermediate': degree_intermediate,
             'profession_id': profession_id,
@@ -570,6 +577,29 @@ class RegisterApplication(Controller):
                         'application_state': application.state,
                         'status': 'noerror',
                     })
+                if kw.get('step_name') == 'quota':
+
+                    quota = {
+                        'forces_quota': kw.get('forces_quota') or '',
+                        'forces_quota_details': kw.get('forces_quota_details') or '',
+                        'rural_quota': kw.get('rural_quota') or '',
+                        'rural_quota_details': kw.get('rural_quota_details') or '',
+
+                    }
+                    form_data.update(
+                        {k: v for k, v in quota.items() if v != '' and v != '0'})
+
+                    application.write(form_data)
+
+                    if application.step_no <= int(kw.get('step_no')):
+                        application.step_no = int(application.step_no) + 1
+
+                    return json.dumps({
+                        'msg': f'Quota Details Updated',
+                        'step_no': application.step_no,
+                        'application_state': application.state,
+                        'status': 'noerror',
+                    })
 
         except Exception as e:
             return json.dumps({
@@ -578,6 +608,115 @@ class RegisterApplication(Controller):
                 'step_no': application.step_no,
                 'application_state': application.state,
             })
+
+    @http.route('/admissiononline/testcenter/change', csrf=False, type="http", methods=['POST', 'GET'], auth="public",
+                website=True)
+    def test_center_change(self, **kw):
+        try:
+
+            current_user = http.request.env.user
+            center_id = int(kw.get('id'))
+            register = http.request.env['odoocms.admission.register'].sudo().search(
+                [('state', '=', 'application')])
+            application = request.env['odoocms.application'].sudo().search(
+                [('application_no', '=', request.env.user.login)], limit=1)
+            test_center = http.request.env['odoocms.admission.test.center'].sudo().search([('id', '=', center_id)])
+
+            # template = http.request.env.ref('odoocms_admission_portal.admission_test_center').sudo()
+            # test_center_step = http.request.env['odoocms.application.steps'].sudo().search(
+            #     [('template', '=', template.id)])
+            #
+            # if center_id:
+            #     data = {'center_id': center_id}
+            #     if application.step_number < test_center_step.sequence:
+            #         data['step_number'] = test_center_step.sequence
+            #     application.sudo().write(data)
+
+            schedule_list = test_center.select_slots(application)
+
+            record = {
+                'status_is': "noerror",
+                'center_id': test_center.id,
+                'test_type': test_center.test_type,
+                # 'discipline': test_center_id.discipline_id.name,
+                'schedule': schedule_list,
+                'schedules': len(schedule_list)
+            }
+            return json.dumps(record)
+
+        except:
+            record = {'status_is': "error"}
+            return json.dumps(record)
+
+    @http.route('/admissiononline/testcenter/save', csrf=False, type="http", methods=['POST', 'GET'], auth="public",
+                website=True)
+    def test_center_change_save(self, **kw):
+        try:
+
+            current_user = http.request.env.user
+            center_id = int(kw.get('center_id'))
+            # time_id = int(kw.get('time_id'))
+
+            register = http.request.env['odoocms.admission.register'].sudo().search(
+                [('state', '=', 'application')])
+            application = request.env['odoocms.application'].sudo().search(
+                [('application_no', '=', request.env.user.login)], limit=1)
+            program_preferences_ordered = http.request.env['odoocms.application.preference'].sudo().search(
+                [('application_id', '=', application.id)], order='preference asc')
+            selected_discipline = []
+            for program in program_preferences_ordered:
+                selected_discipline += str(program.discipline_id.id)
+            selected_discipline = list(dict.fromkeys(selected_discipline))
+            for i in range(0, len(selected_discipline)):
+                selected_discipline[i] = int(selected_discipline[i])
+            slot_ids = []
+
+            for disp in selected_discipline:
+                slot = 'time_id_' + str(disp)
+                slot = http.request.httprequest.form.getlist(slot)
+                if slot[0] != 'undefined':
+                    slot_ids += slot
+
+            # slot_ids = list(slot_ids)
+            slot_ids = list(dict.fromkeys(slot_ids))
+            for i in range(0, len(slot_ids)):
+                slot_ids[i] = int(slot_ids[i])
+            register = http.request.env['odoocms.admission.register'].sudo().search(
+                [('state', '=', 'application')])
+            application = http.request.env['odoocms.application'].sudo().search(
+                [('cnic', '=', current_user.login), ('register_id', '=', register.id)])
+
+            if center_id:
+                template = http.request.env.ref('odoocms_admission_portal.admission_test_center').sudo()
+                test_center_step = http.request.env['odoocms.application.steps'].sudo().search(
+                    [('template', '=', template.id)])
+                data = {
+                    'center_id': center_id,
+                    # 'slot_id': time_id,
+                }
+                if application.step_number < test_center_step.sequence:
+                    data['step_number'] = test_center_step.sequence
+                values = {}
+
+                if slot_ids and len(slot_ids) > 0:
+                    slot_ids = http.request.env['odoocms.admission.test.time'].sudo().search(
+                        [('id', 'in', list(map(int, slot_ids)))])
+                    # slot_ids += application.slot_ids
+
+                    if slot_ids:
+                        data['slot_ids'] = [(6, 0, slot_ids.ids)]
+
+                if slot_ids:
+                    application.sudo().write(data)
+
+            record = {
+                'status_is': "noerror",
+            }
+            return json.dumps(record)
+
+        except:
+            record = {'status_is': "error"}
+            return json.dumps(record)
 
     @route('/test/slot/', type='http', auth='user', method='POST', csrf=False)
     def test_slot(self, **kw):

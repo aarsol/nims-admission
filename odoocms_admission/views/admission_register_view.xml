@@ -88,7 +88,7 @@
                                     <field name="application_ids" nolabel="1" readonly="1"/>
                                 </group>
                             </page>
-                            <page string="Test Series">
+                            <!--<page string="Test Series">
                                 <field name="test_series_ids">
                                     <tree editable="bottom">
                                         <field name="register_id"/>
@@ -97,7 +97,7 @@
                                         <field name="state"/>
                                     </tree>
                                 </field>
-                            </page>
+                            </page>-->
                             <page name="under_taking" string="Undertaking">
                                 <group>
                                     <field name="undertaking"/>

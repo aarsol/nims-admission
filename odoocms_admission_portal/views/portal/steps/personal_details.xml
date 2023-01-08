@@ -279,7 +279,7 @@
                             </div>
                             <div class="mb-1 col-md-4 pb-2" t-attf-style="{{'display:none' if application_id.mother_status=='deceased' else 'display:block' }}">
                                 <t t-set="mother_education" t-value="dict(application_id.fields_get(allfields=['mother_education'])['mother_education']['selection'])"/>
-                                <select required="1" class="form-control inputText" id="mother_education" name="mother_education">
+                                <select  class="form-control inputText" id="mother_education" name="mother_education">
                                     <option selected='1' value=''>Select Mother Education</option>
                                     <t t-foreach="mother_education" t-as="edu">
                                         <option t-att-selected='edu==application_id.mother_education' t-att-value="edu">

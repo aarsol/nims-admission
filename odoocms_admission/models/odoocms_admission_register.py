@@ -36,7 +36,7 @@ class OdooCMSAdmissionRegister(models.Model):
 
     # Test Series
     undertaking = fields.Html(string='Undertaking')
-    test_series_ids = fields.One2many('odoocms.admission.test.series', 'register_id', 'Test Series')
+    # test_series_ids = fields.One2many('odoocms.admission.test.series', 'register_id', 'Test Series')
 
     def sort_applications(self):
         i = 1

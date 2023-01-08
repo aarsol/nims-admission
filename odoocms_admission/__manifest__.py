@@ -25,7 +25,7 @@
         # 'views/odoocms_merit_list.xml',
         'views/odoocms_admission_common.xml',
         'views/test_schedule.xml',
-        'views/test_series.xml',
+        # 'views/test_series.xml',
         'views/register_candidate_view.xml',
         'views/odoocms_admission_education.xml',
 

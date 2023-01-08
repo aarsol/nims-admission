@@ -44,8 +44,11 @@
         
         $('#dashboard_button').css('cursor', 'pointer');
         $('#dashboard_button').on('click', function () {
-                      lca = '/admission/student/dashboard/';
-                      window.location.replace(lca)
+                      let confirmAction = confirm("Are you sure to Logout?");
+        if (confirmAction) {
+            lca = '/web/session/logout?redirect=/web/signin/';
+            window.location.replace(lca)
+        }
               })
               
               $('#alert_show_button').on('click', function (e) {

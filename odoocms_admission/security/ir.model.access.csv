@@ -61,3 +61,5 @@ access_odoocms_pre_test,odoocms.odoocms.pre.test,model_odoocms_pre_test,odoocms.
 access_odoocms_pre_test,odoocms.odoocms.pre.test,model_odoocms_pre_test,odoocms.group_cms_user,1,1,1,1
 
 access_success_message_wizard,access.success.message.wizard,model_success_message_wizard,,1,1,1,1
+
+

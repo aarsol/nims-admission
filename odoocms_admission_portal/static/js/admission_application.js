@@ -242,6 +242,115 @@ function image_preview_func(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+function on_change_test_center(id) {
+    var formData = new FormData();
+    formData.append('id',id)
+    $.ajax({
+        url: "/admissiononline/testcenter/change",
+        type: "POST",
+        dataType: "json",
+        data: formData,
+        contentType: false,
+        processData:false,
+        success: function(data)
+        {
+            if (data.test_type == 'pbt' && data.schedule.length > 0)
+            {
+                $("#test_schedule_div").show();
+                $("#pbt").empty();
+                $("#cbt").empty();
+                //$("#pbt").append("<b>Test Type:</b>"+" "+"Paper Based Test"+"<br/><br/><br/>"+"<b>Test Date:</b>"+ " " + data.schedule[0].date + "<br/>" + "<b>Test Time:</b>" + " " + data.schedule[0].time );
+                $("#pbt").append("<b>Test Type:</b>"+" "+"Paper Based Test"+"<br/><br/>"+"Please choose: <br/><br/>")
+                for(i=0; i < data.schedule.length;i++){
+                    $("#pbt").append(
+                        "<input type='radio' required='true'  value='"+data.schedule[i].id+"'  name='test_timing' id='time"+i+"'>" + " " + "<b>Test Date:</b>"+ " " + data.schedule[i].date + "<b>Test Time:</b>" + " " + data.schedule[i].time + "<br/><br/>"
+                    );
+                }
+           }
+           else if(data.test_type == 'cbt' && data.schedule.length > 0)
+           {``
+                $("#test_schedule_div").show();
+                $("#cbt").empty();
+                $("#pbt").empty();
+                $("#cbt").append("<b>Test Type:</b>"+" "+"Computer Based Test"+"<br/><br/>"+"Please choose: <br/><br/>")
+                for(i=0; i < data.schedule.length;i++){
+                    $("#cbt").append(
+                      "<input type='radio' required='true'  value='"+data.schedule[i].id+"' name='test_timing' id='time"+i+"'>" + " " + "<b>Test Date:</b>"+ " " + data.schedule[i].date + "<b>Test Time:</b>" + " " + data.schedule[i].time + "<br/><br/>"
+                );
+           }
+           } else {
+                $("#cbt").empty();
+                $("#pbt").empty();
+                $("#test_schedule_div").hide();
+           }
+        },
+        error: function() {
+            console.log('error');
+        }
+    });
+}
+
+function on_change_test_time(selected_disciplines){
+
+  var formData = new FormData();
+  var center = $("#test_center option:selected").val();
+
+  formData.append('center_id',center);
+ for(i=0; i < selected_disciplines.length; i++){
+ var time = $("input[type='radio'][name='test_timing_"+selected_disciplines[i]+"']:checked").val();
+ formData.append("time_id_"+selected_disciplines[i],time)
+ }
+
+
+  console.log('sending');
+
+  $.ajax({
+      url: "/admissiononline/testcenter/save",
+      type: "POST",
+      dataType: "json",
+      data: formData,
+      contentType: false,
+      processData:false,
+      success: function(data)
+      {
+           $("#test_center_lock").show();
+           confirm_test_center();
+      },
+	  error: function()
+	  {
+    	console.log('error');
+    	}
+    });
+  //console.log(rate_value);
+}
+function confirm_test_center(){
+
+
+    var formData = new FormData();
+    $.ajax({
+        url: "/confirm/test/center",
+		type: "POST",
+		dataType: "json",
+		data: formData,
+		beforeSend: function(){
+		    $("#body-overlay-voucher").show();
+		},
+		contentType: false,
+    	   processData:false,
+		success: function(data){
+		if(data.status_is != 'error'){
+			$("#test_center").prop('disabled', 'disabled');
+			$('input[name=test_timing]').attr("disabled",true);
+			$('#test_center_lock').attr("disabled",true);
+			$('#admit_card_down').show();
+			}
+			else{
+			alert('Not Confirmed');
+			}
+		},
+		error: function(){}
+	});
+}
 function on_change_is_any_disability() {
     if ($('#disabled_person').find(":selected").val() == 'yes')
         {
@@ -252,6 +361,32 @@ function on_change_is_any_disability() {
     else{
         $("#disability_div").css("display", "none");
         $("#disabled_person_detail").attr("required", "0");
+    }
+
+}
+function on_change_is_forces_quota() {
+    if ($('#forces_quota').find(":selected").val() == 'yes')
+        {
+         $("#forces_quota_div").css("display", "block");
+         $("#forces_quota_details").attr("required", "1");
+
+        }
+    else{
+        $("#forces_quota_div").css("display", "none");
+        $("#forces_quota_details").attr("required", "0");
+    }
+
+}
+function on_change_is_rural_quota() {
+    if ($('#rural_quota').find(":selected").val() == 'yes')
+        {
+         $("#rural_quota_div").css("display", "block");
+         $("#rural_quota_details").attr("required", "1");
+
+        }
+    else{
+        $("#rural_quota_div").css("display", "none");
+        $("#rural_quota_details").attr("required", "0");
     }
 
 }
@@ -455,6 +590,7 @@ function check_subject_marks(param) {
 $(":input").inputmask();
 
 $(document).ready(function () {
+
 
     var final_step_inital_state = $('#final_confirmation_div').clone()
     if ($('#application_step').val() == $('.header_tab').length) {
@@ -754,6 +890,35 @@ $(document).ready(function () {
             }
         });
     })
+    $('#quota_form').on('submit', function (e) {
+        e.preventDefault();
+        // $('#ring1').show()
+
+        var formData = new FormData();
+        var form_data = $('#quota_form').serializeArray();
+        $.each(form_data, function (key, input) {
+            formData.append(input.name, input.value);
+        });
+        $('#page_loader').show()
+
+        $.ajax({
+            url: '/admission/application/save/',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                data = JSON.parse(response)
+                prepare_next_step(data)
+                // $('#page_loader').hide()
+
+            },
+            error: function (response) {
+                data = JSON.parse(response)
+                alert(data['msg'])
+            }
+        });
+    })
 
     // ***********************************************************************************
 
@@ -819,6 +984,8 @@ $(document).ready(function () {
         });
 
     })
+
+
     $('#mother_status').on('change', function () {
         if ($('#mother_status').val() == 'alive') {
             $('#mother_status_div').show();

@@ -4,8 +4,8 @@
         <section class="py-2 text-center container-fluid">
           <a id='dashboard_button' >
             <div class='float-right m-2 px-2 py-1  rounded  shadow' style='color:white;'> 
-              <!-- <i class="fa-sharp fa-solid fa-power-off "></i> -->
-              <i class="fas fa-home"></i>
+               <i class="fa-sharp fa-solid fa-power-off "></i>
+              <!--<i class="fas fa-home"></i>-->
               <!-- <i class="fa-sharp fa-solid fa-house-blank"></i> -->
             </div>
           </a>

@@ -12,4 +12,5 @@ from . import odoocms_advertisement
 from . import admission_offer_letter
 from . import odoocms_application_institute
 from . import admission_helpdesk
+from . import test_schedule_nutech
 

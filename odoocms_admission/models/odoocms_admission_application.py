@@ -237,7 +237,7 @@ class OdooCMSAdmissionApplication(models.Model):
     fee_voucher_download_date = fields.Date('Fee Voucher Download Date',
                                             help="This field is defined for the Fee Voucher Downloaded Dashboard. Required in the Tree View")
     test_series_id = fields.Many2one('odoocms.admission.test.series', 'Time')
-    # slot_ids = fields.Many2many('odoocms.admission.test.time','test_slot_applicant_rel', 'slot_id', 'student_id', 'Test Timings')
+    slot_ids = fields.Many2many('odoocms.admission.test.time','test_slot_applicant_rel', 'slot_id', 'student_id', 'Test Timings')
     applicant_academic_ids = fields.One2many(
         'applicant.academic.detail', 'application_id')
     confirm_test_center = fields.Boolean('Confirm Test Slot', default=False)

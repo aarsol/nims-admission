@@ -36,7 +36,7 @@
                             <div class="mb-1 col-md-7 mt-3">
                                 <div class="mb-5 col-md-12">
                                     <input required="True" t-att-value='application_id.voucher_number' class="form-control" type="number" name="voucher_number" id="voucher_number"/>
-                                    <label for="voucher_number" class="floating-label">Receipt Number*</label>
+                                    <label for="voucher_number" class="floating-label">Consumer/Challan Number*</label>
                                 </div>
 
                                 <div class="mb-1 col-md-12">

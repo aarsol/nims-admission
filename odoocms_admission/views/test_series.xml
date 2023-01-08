@@ -79,13 +79,13 @@
                 parent="menu_admission_configuration"
                 groups="odoocms_admission.group_admission_manager"
                 sequence="170"/>
-        <menuitem
+        <!--<menuitem
                 id="action_odoocms_test_series"
                 name="Test Series"
                 parent="odoocms_test_series"
                 action="action_odoocms_admission_test_series"
                 groups="odoocms_admission.group_admission_manager"
-                sequence="180"/>
+                sequence="180"/>-->
         <!--        groups="odoocms.group_cms_manager,odoocms_admission.group_admission_manager"-->
     </data>
 </odoo>

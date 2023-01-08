@@ -30,6 +30,8 @@
         'views/portal/steps/fee_voucher.xml',
         'views/portal/steps/documents_upload.xml',
         'views/portal/steps/contact_details.xml',
+        'views/portal/steps/quota.xml',
+        'views/portal/steps/test_center_nutech.xml',
         'views/portal/steps/guardian_details.xml',
         'views/portal/steps/scholarship.xml',
         'views/portal/steps/merit.xml',

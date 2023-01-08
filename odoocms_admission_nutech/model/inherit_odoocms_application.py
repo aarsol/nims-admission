@@ -53,12 +53,36 @@ class OdooCMSInherit(models.Model):
     disabled_person_detail = fields.Text(string='Disability Details')
     disease = fields.Selection(string='Do you have any chronical disease?',
                                        selection=[('no', 'No'),
-                                                  ('yes', 'Yes'), ])
+                                                  ('yes', 'Yes')])
     disease_details = fields.Text(string='Disease Detail')
     password = fields.Char(string='Password')
     sat_score = fields.Float(string='SAT Score')
     education_consent = fields.Boolean(string='Education Consent')
+    degree = fields.Many2one('odoocms.degree','Last Degree')
+    forces_quota = fields.Selection(string='Applying against Forces Quota?',
+                               selection=[('no', 'No'),
+                                          ('yes', 'Yes'), ], default='no', help='Do you want to apply for admission against seats reserved for wards of Armed Forces Personnel (Serving / Retired / Shuhada)?')
+    forces_quota_details = fields.Char(string='Forces Quota details')
 
+    rural_quota = fields.Selection(string='Applying against Forces Quota?',
+                                    selection=[('no', 'No'),
+                                               ('yes', 'Yes')], default='no',
+                                    help='Do you want to apply for admission against seats reserved for backward / less developed areas of Pakistan?')
+    rural_quota_details = fields.Char(string='Rural Quota details')
+
+    center_id = fields.Many2one('odoocms.admission.test.center', 'Test Center')
+    slot_id = fields.Many2one('odoocms.admission.test.time', 'Time')
+    slot_ids = fields.Many2many('odoocms.admission.test.time', 'test_slot_applicant_rel', 'slot_id', 'student_id',
+                                'Test Timings')
+    confirm_test_center = fields.Boolean('Confirm Test Slot', default=False)
+    locked = fields.Boolean('Locked', default=False)
+
+    center_id = fields.Many2one('odoocms.admission.test.center', 'Test Center')
+    slot_id = fields.Many2one('odoocms.admission.test.time', 'Time')
+    slot_ids = fields.Many2many('odoocms.admission.test.time', 'test_slot_applicant_rel', 'slot_id', 'student_id',
+                                'Test Timings')
+    confirm_test_center = fields.Boolean('Confirm Test Slot', default=False)
+    locked = fields.Boolean('Locked', default=False)
 
 
     @api.onchange('fee_voucher_state')

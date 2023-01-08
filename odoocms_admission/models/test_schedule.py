@@ -12,6 +12,6 @@ class OdooCMSEntryTestCenter(models.Model):
     test_type = fields.Selection([('cbt', 'Computer Based Test'), ('pbt', 'Paper Based Test')], default="cbt")
     session = fields.Char(string='Session')
     series = fields.Char(string='Test Series')
-    test_series_id = fields.Many2one('odoocms.admission.test.series', string='Test Series')
+    # test_series_id = fields.Many2one('odoocms.admission.test.series', string='Test Series')
 
     # discipline_id = fields.Many2one('odoocms.discipline', required=True)
