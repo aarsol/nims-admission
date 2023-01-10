@@ -72,7 +72,7 @@
 
 
                                                             <br/>
-                                                            <div>
+                                                            <div t-if="application_id.slot_ids" >
                                                               <t t-if="application_id.slot_ids[0].id == time['id'] and application_id.center_id.id == test_center_disc.id">
                                                                <!--t-attf-name="test_timing_{{time['discipline'].id}}"-->
                                                                 <input type="radio" required="true"
