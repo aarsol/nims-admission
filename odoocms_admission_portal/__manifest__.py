@@ -43,6 +43,7 @@
 
         'reports/report_admission_invoice.xml',
         'reports/admit_card.xml',
+        'reports/admit_nutech.xml',
 
     ],
     'installable': True,

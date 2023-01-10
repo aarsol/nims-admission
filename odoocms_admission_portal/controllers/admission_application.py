@@ -6,7 +6,8 @@ from datetime import date, datetime
 import json
 import base64
 import pdb
-
+import random
+import string
 
 class RegisterApplication(Controller):
 
@@ -112,9 +113,17 @@ class RegisterApplication(Controller):
 
         admit_card = request.env['applicant.entry.test'].sudo().search(
             [('student_id', "=", application_id.id)])
+        program_preferences_ordered = http.request.env['odoocms.application.preference'].sudo().search(
+            [('application_id', '=', application_id.id)], order='preference asc')
+        selected_discipline = []
+        for program in program_preferences_ordered:
+            selected_discipline += str(program.discipline_id.id)
+        selected_discipline = list(dict.fromkeys(selected_discipline))
+        for i in range(0, len(selected_discipline)):
+            selected_discipline[i] = int(selected_discipline[i])
 
         context = {
-
+            'selected_discipline': selected_discipline,
             'steps_id': steps_id,
             'company': company,
             'descipline_id': descipline_id,
@@ -638,7 +647,7 @@ class RegisterApplication(Controller):
                 'status_is': "noerror",
                 'center_id': test_center.id,
                 'test_type': test_center.test_type,
-                # 'discipline': test_center_id.discipline_id.name,
+                # 'discipline': test_center_id.discipline_id.id,
                 'schedule': schedule_list,
                 'schedules': len(schedule_list)
             }
@@ -655,6 +664,7 @@ class RegisterApplication(Controller):
 
             current_user = http.request.env.user
             center_id = int(kw.get('center_id'))
+
             # time_id = int(kw.get('time_id'))
 
             register = http.request.env['odoocms.admission.register'].sudo().search(
@@ -683,40 +693,46 @@ class RegisterApplication(Controller):
                 slot_ids[i] = int(slot_ids[i])
             register = http.request.env['odoocms.admission.register'].sudo().search(
                 [('state', '=', 'application')])
-            application = http.request.env['odoocms.application'].sudo().search(
-                [('cnic', '=', current_user.login), ('register_id', '=', register.id)])
+            application = request.env['odoocms.application'].sudo().search(
+                [('application_no', '=', request.env.user.login)], limit=1)
 
             if center_id:
-                template = http.request.env.ref('odoocms_admission_portal.admission_test_center').sudo()
+                template = http.request.env.ref('odoocms_admission_portal.test_center_nutech').sudo()
                 test_center_step = http.request.env['odoocms.application.steps'].sudo().search(
                     [('template', '=', template.id)])
                 data = {
                     'center_id': center_id,
                     # 'slot_id': time_id,
                 }
-                if application.step_number < test_center_step.sequence:
-                    data['step_number'] = test_center_step.sequence
+
+                if application.step_no < test_center_step.sequence:
+                    data['step_no'] = test_center_step.sequence
                 values = {}
 
                 if slot_ids and len(slot_ids) > 0:
                     slot_ids = http.request.env['odoocms.admission.test.time'].sudo().search(
                         [('id', 'in', list(map(int, slot_ids)))])
+                    data
                     # slot_ids += application.slot_ids
 
                     if slot_ids:
                         data['slot_ids'] = [(6, 0, slot_ids.ids)]
 
                 if slot_ids:
+                    data['confirm_test_center'] = True
                     application.sudo().write(data)
 
-            record = {
-                'status_is': "noerror",
-            }
-            return json.dumps(record)
+            return json.dumps({
+                'msg': f'Entry Test Details Confirmed',
+                'step_no': application.step_no,
+                'application_state': application.state,
+                'status': 'noerror',
+            })
 
         except:
             record = {'status_is': "error"}
             return json.dumps(record)
+
 
     @route('/test/slot/', type='http', auth='user', method='POST', csrf=False)
     def test_slot(self, **kw):
@@ -1282,3 +1298,47 @@ class RegisterApplication(Controller):
 
         # report_ref = 'odoocms_admission_portal.action_student_admit_card_download'
         return self._show_report_admit(model=offer_letter, report_type=report_type, report_ref=report_ref, download="download")
+
+    @http.route('/download/admit/card/nutech', csrf=False, type="http", methods=['POST', 'GET'], auth="public",
+                website=True)
+    def download_admit_card_nutech(self, **kw):
+        current_user = http.request.env.user
+        length = 6
+        # all = string.ascii_letters + string.digits + '$#)(+-<=_@%*&!~?>'
+        # string.punctuation
+        all = string.ascii_letters + string.digits + '$#'
+        password = "".join(random.sample(all, length))
+
+        register = http.request.env['odoocms.admission.register'].sudo().search(
+            [('state', '=', 'application')])
+        application = request.env['odoocms.application'].sudo().search(
+             [('application_no', '=', current_user.login)])
+        if not application.cbt_password:
+            application.sudo().write({
+                'cbt_password': password
+            })
+        # application.fee_voucher_download_date = date.today()
+        return self._show_report_admit(model=application, report_type='pdf',
+                                        report_ref='odoocms_admission_nutech.action_applicant_admit_card',
+                                        download=True)
+
+    @http.route('/confirm/test/center', csrf=False, type="http", methods=['POST', 'GET'], auth="public", website=True)
+    def lock_test_center(self, **kw):
+        current_user = http.request.env.user
+        register = http.request.env['odoocms.admission.register'].sudo().search(
+            [('state', '=', 'application')])
+        application = request.env['odoocms.application'].sudo().search(
+            [('application_no', '=', current_user.login)])
+
+        # if application.center_id and application.slot_id:
+        if application.center_id and len(application.slot_ids) > 0:
+            try:
+                data = {
+                    'confirm_test_center': True,
+                }
+                application.write(data)
+            except:
+                data = {'status_is': "error", 'step_no': application.step_no}
+        else:
+            data = {'status_is': "error", 'step_no': application.step_no}
+        return json.dumps(data)

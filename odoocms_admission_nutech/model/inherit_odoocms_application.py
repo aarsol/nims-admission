@@ -83,6 +83,7 @@ class OdooCMSInherit(models.Model):
                                 'Test Timings')
     confirm_test_center = fields.Boolean('Confirm Test Slot', default=False)
     locked = fields.Boolean('Locked', default=False)
+    cbt_password = fields.Char('CBT Password')
 
 
     @api.onchange('fee_voucher_state')

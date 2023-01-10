@@ -297,7 +297,9 @@ function on_change_test_time(selected_disciplines){
 
   formData.append('center_id',center);
  for(i=0; i < selected_disciplines.length; i++){
- var time = $("input[type='radio'][name='test_timing_"+selected_disciplines[i]+"']:checked").val();
+ debugger;
+ //var time = $("input[type='radio'][name='test_timing_"+selected_disciplines[i]+"']:checked").val();
+ var time = $("input[type='radio'][name='test_timing']:checked").val();
  formData.append("time_id_"+selected_disciplines[i],time)
  }
 

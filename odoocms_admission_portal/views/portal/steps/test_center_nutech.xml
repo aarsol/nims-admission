@@ -73,34 +73,37 @@
 
                                                             <br/>
                                                             <div>
-                                                             <!-- <t t-if="student.slot_id.id == time['id'] and student.center_id.id == test_center_disc.id">-->
+                                                              <t t-if="application_id.slot_ids[0].id == time['id'] and application_id.center_id.id == test_center_disc.id">
+                                                               <!--t-attf-name="test_timing_{{time['discipline'].id}}"-->
                                                                 <input type="radio" required="true"
                                                                        t-att-disabled="application_id.confirm_test_center"
                                                                        t-if="time['id'] in selected_slots"
                                                                        checked="true"
                                                                        t-att-value="time['id']"
-                                                                       t-attf-name="test_timing_{{time['discipline'].id}}" t-attf-id="time_{{time['id']}}">
+                                                                       t-attf-name="test_timing"
+                                                                       t-attf-id="time_{{time['id']}}">
                                                                     Test Date:
                                                                     <t t-esc="time['date']"/>
                                                                     Time:
                                                                     <t t-esc="time['time']"/>
-                                                                    Discipline:
-                                                                    <t t-esc="time['discipline'].name"/>
+                                                                     <!--Discipline:
+                                                                    <t t-esc="time['discipline'].name"/>-->
                                                                 </input>
-                                                              <!--</t>-->
+                                                              </t>
                                                                 <br/>
+                                                                <!-- t-attf-name="test_timing_{{time['discipline'].id}}"-->
                                                                 <t t-if="not application_id.slot_id.id == time['id'] and application_id.center_id.id == test_center_disc.id">
                                                                     <input type="radio" required="true"
                                                                            t-att-disabled="application_id.confirm_test_center"
                                                                            t-att-value="time['id']"
                                                                            t-if="not time['id'] in selected_slots"
-                                                                           t-attf-name="test_timing_{{time['discipline'].id}}"
+                                                                           t-attf-name="test_timing"
                                                                            t-attf-id="time_{{time['id']}}">Test Date:
                                                                         <t t-esc="time['date']"/>
                                                                         Time:
                                                                         <t t-esc="time['time']"/>
-                                                                        Discipline:
-                                                                        <t t-esc="time['discipline'].name"/>
+                                                                       <!-- Discipline:
+                                                                        <t t-esc="time['discipline'].name"/>-->
                                                                     </input>
                                                                     <br/>
                                                                 </t>
@@ -159,13 +162,36 @@
                 <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update/Skip</button>
             </div>
             <div class='col-4'>
+                <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <h4 class='mt-3 mb-0'>Final Confirmation/Admit Card</h4>
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+                <div class="mt-2">
+                                                <button class="btn btn-primary" id="test_center_lock" t-if="application_id.center_id"
+                                                        t-att-disabled="application_id.confirm_test_center"
+                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
+                                                </button>
+                                                <button class="btn btn-primary" id="test_center_lock" t-if="not application_id.center_id"
+
+                                                        t-att-disabled="application_id.confirm_test_center"
+                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
+                                                </button>
+                                                <a t-if="application_id.center_id and application_id.confirm_test_center" class="btn btn-light o_download_btn"
+                                                   href="/download/admit/card/nutech">
+                                                    Download Admit Card
+                                                </a>
+                                                <a id="admit_card_down" t-if="not application_id.confirm_test_center" style="display:'none'"  class="btn btn-light o_download_btn"
+                                                   href="/download/admit/card/nutech">
+                                                    Download Admit Card
+                                                </a>
+                                            </div>
 
             </div>
 
             <div  class="container">
                 <br/>
 
-                <t t-if="admit_card">
+                <!--<t t-if="admit_card">
                     <t t-if="admit_card.slot_type=='test'">
                         <a t-attf-href="/download/admit/{{'test'}}">
                             <div class='col-3 m-1'>
@@ -188,12 +214,12 @@
                             <button class="btn btn-primary ml-1">Downloand Admit Card</button>
                         </a>
                     </t>
-                </t>
-                <t t-else="">
+                </t>-->
+                <!--<t t-else="">
                     <span style='color:red'>
                     No Slot Assigned!
                     </span>
-                </t>
+                </t>-->
 
                 <!-- <label class='form-label' for="religion">Testing Center</label> -->
                 <!-- <form id='center_selection_form'>
