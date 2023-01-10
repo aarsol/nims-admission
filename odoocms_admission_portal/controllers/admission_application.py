@@ -451,7 +451,7 @@ class RegisterApplication(Controller):
                     # 'fee_voucher_state': 'upload',
                     voucher_image = kw.get('voucher_image')
                     voucher_data = {
-                        'fee_voucher_state': kw.get('upload0'),
+                        'fee_voucher_state': 'upload',
                         'voucher_number': kw.get('voucher_number') or '',
                         'voucher_date': datetime.strptime(kw.get('voucher_date'), '%Y-%m-%d') or '',
                     }

@@ -249,6 +249,10 @@
                 </div>
 
             </t>
+            <t t-if="application_id.fee_voucher_state== 'upload'">
+                <p style="color:red;">Your Fee is not verified yet.</p>
+
+            </t>
         </div>
         <br/>
     </template>

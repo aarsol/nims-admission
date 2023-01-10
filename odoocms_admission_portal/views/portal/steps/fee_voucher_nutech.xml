@@ -63,6 +63,10 @@
                 </div>
 
             </t>
+            <t t-if="application_id.fee_voucher_state== 'upload'">
+                <p>Your Fee is not verified yet.</p>
+
+            </t>
         </div>
         <br/>
     </template>

@@ -345,6 +345,7 @@ function confirm_test_center(){
 			$('input[name=test_timing]').attr("disabled",true);
 			$('#test_center_lock').attr("disabled",true);
 			$('#admit_card_down').show();
+			location.reload();
 			}
 			else{
 			alert('Not Confirmed');
@@ -1761,13 +1762,14 @@ $(document).ready(function () {
                         if ((data.academic_data[j].specialization).length < 1) {
                             data.academic_data[j].specialization = '--'
                         }
+                        /*<td class='col-auto'><a href='/file/download/${data.academic_data[j].id}/applicant.academic.detail'><i class='fas fa-download'></i></a></td>*/
                         var row = `<tr id='${data.academic_data[j].id}'>
                         <td class='col-auto'><input type='text' value="${data.academic_data[j].degree_name}" readonly='1' id='degree_val' class='form-control-plaintext col-auto'/></td>
                         <td class='col-auto'><input type='text' value="${(data.academic_data[j].specialization)}" readonly='1' class='form-control-plaintext col-auto'/></td>
                         <td class='col-auto'><input type='text' value="${data.academic_data[j].institue}" readonly='1' class='form-control-plaintext col-auto'/></td>
                         <td class='col-auto'><input type='text' value="${data.academic_data[j].percentage}" readonly='1' class='form-control-plaintext col-auto'/>
                         <td class='col-auto'><input type='text' value="${data.academic_data[j].state}" readonly='1' class='form-control-plaintext col-auto'/></td>
-                        <td class='col-auto'><a href='/file/download/${data.academic_data[j].id}/applicant.academic.detail'><i class='fas fa-download'></i></a></td>
+
                         <td class='col-auto'><button id='education_delete' value="${data.academic_data[j].id}" type='button' class='btn btn-outline-primary' onclick='delete_education(this)'><i style='color: #875A7B;border:None' class='fa-solid fa-trash'></i></button></td>
                         </tr>`
                         $('#education_table_body').append(row)

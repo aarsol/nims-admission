@@ -2,13 +2,14 @@
 <odoo>
     <template id="final_confirmation" name="Final Confirmation">
 
-        <div class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#final_confirmation_div').slideToggle(1000); $('#final_confirmation_dropdpown').toggleClass('fa-angle-down fa-angle-up');">
+        <div t-att-disabbled="application_id.fee_voucher_state== 'verify'" class="ml-3 mr-3 header_tab diable_header_tab mt-0 p-2" onclick="$('#final_confirmation_div').slideToggle(1000); $('#final_confirmation_dropdpown').toggleClass('fa-angle-down fa-angle-up');">
+
             <a class="btn btn-link">
                 <i style='color: white;font-size: 25px;' class="fa-solid fa-money-check-dollar float-left"></i>
                 <h2 style='color:white' class="float-left"> &#160;&#160;<t t-esc="step.name"/>
                 </h2>
             </a>
-            <a>
+            <a >
                 <i id='final_confirmation_dropdpown' class="fas fa-angle-down float-right p-0 m-0" style="font-size: 40px; cursor: pointer;color: white"></i>
             </a>
         </div>
@@ -20,7 +21,7 @@
             <button id='reload_final_step' style='background-color:#875A7B;border:None' class="btn btn-primary m-2">View Form</button>
         </div> -->
         <!-- <h1><button>Review</button></h1> -->
-        <div id="final_confirmation_div" class="row container-fluid mt-3 collapse_div border text-center">
+        <div  t-if="application_id.fee_voucher_state== 'verify'" id="final_confirmation_div" class="row container-fluid mt-3 collapse_div border text-center">
 
 
 
@@ -41,7 +42,7 @@
         </div>
         <div class="container-fluid mb-2 ">
             <t t-if="application_id.state=='draft'">
-                <div style='display:none' class="form-check mt-2 ml-3">
+                <div t-if="application_id.fee_voucher_state== 'verify'" style='display:none' class="form-check mt-2 ml-3">
                     <input class="form-check-input" type="checkbox" value="" id="agreement_terms"/>
                     <label class="form-check-label" for="agreement_terms">I Agree With Term And Conditions
                     </label>

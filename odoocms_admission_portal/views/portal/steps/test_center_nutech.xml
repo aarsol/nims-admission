@@ -14,8 +14,8 @@
             </a>
         </div>
 
-        <div id="test_center_div" class="row container-fluid mt-3 collapse_div">
-            <div class='col-8'>
+        <div t-if="application_id.fee_voucher_state== 'verify' and application_id.state=='submit'" id="test_center_div" class="row container-fluid mt-3 collapse_div">
+            <div class='col-4'>
 
                 <form id='entry_test_form' class="row g-3">
                     <input type="hidden" name="step_no" t-att-value='counter_step' />
@@ -50,6 +50,45 @@
                         <label class='floating-label' for="test_center">Select Center</label>
                     </div>
 
+
+
+                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <hr class='mt-0 mb-0'/>
+                        <button  class="btn btn-primary mt-2" id="test_center_lock" t-if="application_id.center_id"
+                                                        t-att-disabled="application_id.confirm_test_center"
+                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
+                                                </button>
+                                                <button class="btn btn-primary" id="test_center_lock" t-if="not application_id.center_id"
+
+                                                        t-att-disabled="application_id.confirm_test_center"
+                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
+                                                </button>
+                                                <a t-if="application_id.center_id and application_id.confirm_test_center" class="btn btn-light o_download_btn"
+                                                   href="/download/admit/card/nutech">
+                                                    Download Admit Card
+                                                </a>
+                                                <a id="admit_card_down" t-if="not application_id.confirm_test_center" style="display:'none'"  class="btn btn-light o_download_btn"
+                                                   href="/download/admit/card/nutech">
+                                                    Download Admit Card
+                                                </a>
+                    </div>
+
+
+
+
+
+                    <div class="col-12">
+                        <input type="submit" style='display: none;' class="btn btn-primary"/>
+                    </div>
+                </form>
+                <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update/Skip</button>
+            </div>
+            <div class='col-8'>
+                <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
+                        <h4 class='mt-3 mb-0'>Entry Test Date/Slot </h4>
+                        <hr class='mt-0 mb-0'/>
+                    </div>
+                <div class="ml-2">
                     <div id="test_schedule_div" >
                 <p id="pbt"/>
                 <div id="cbt">
@@ -147,43 +186,6 @@
                                             </div>
             </div>
 
-                    <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
-                        <hr class='mt-0 mb-0'/>
-                    </div>
-
-
-
-
-
-                    <div class="col-12">
-                        <input type="submit" style='display: none;' class="btn btn-primary"/>
-                    </div>
-                </form>
-                <button onclick="check_form_validation(this)" t-attf-style="border:None; {{'display:none' if application_id.state != 'draft' else '' }}" class="btn btn-primary ml-1">Update/Skip</button>
-            </div>
-            <div class='col-4'>
-                <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
-                        <h4 class='mt-3 mb-0'>Final Confirmation/Admit Card</h4>
-                        <hr class='mt-0 mb-0'/>
-                    </div>
-                <div class="mt-2">
-                                                <button class="btn btn-primary" id="test_center_lock" t-if="application_id.center_id"
-                                                        t-att-disabled="application_id.confirm_test_center"
-                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
-                                                </button>
-                                                <button class="btn btn-primary" id="test_center_lock" t-if="not application_id.center_id"
-
-                                                        t-att-disabled="application_id.confirm_test_center"
-                                                        t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
-                                                </button>
-                                                <a t-if="application_id.center_id and application_id.confirm_test_center" class="btn btn-light o_download_btn"
-                                                   href="/download/admit/card/nutech">
-                                                    Download Admit Card
-                                                </a>
-                                                <a id="admit_card_down" t-if="not application_id.confirm_test_center" style="display:'none'"  class="btn btn-light o_download_btn"
-                                                   href="/download/admit/card/nutech">
-                                                    Download Admit Card
-                                                </a>
                                             </div>
 
             </div>
