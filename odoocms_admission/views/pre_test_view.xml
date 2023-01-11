@@ -48,6 +48,6 @@
             name="Pre Test"
             action="pre_test_room_action"
             sequence="190"
-            parent="odoocms_admission.odoocms_test_series"
+            parent="odoocms_admission.menu_odoocms_academic_setup"
     />
 </odoo>
