@@ -286,7 +286,8 @@
                                                 Last Degree
                                             </div>
                                             <div class="col col-8 borders" style="text-align:left;">
-                                                <t t-esc="app.degree.name"/> ( <t t-esc="app.degree.code"/> )
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-set="last_degree" t-value="len(app.applicant_academic_ids) - 1"/>
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-esc="app.applicant_academic_ids[last_degree].group_specialization.name"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -513,6 +514,15 @@
                                                    <t t-esc="dis.name"/> <!--(<t t-esc="app.preference_ids[0].program_id.code"/>)-->
                                                 </div>
                                             </div>
+                                           <div class="row">
+                                            <div class="col col-4 borders" style="text-align:left;">
+                                                Last Degree
+                                            </div>
+                                            <div class="col col-8 borders" style="text-align:left;">
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-set="last_degree" t-value="len(app.applicant_academic_ids) - 1"/>
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-esc="app.applicant_academic_ids[last_degree].group_specialization.name"/>
+                                            </div>
+                                        </div>
                                              <!-- <div class="row">
                                                 <div class="col col-4 borders" style="text-align:left;">
                                                     Program
@@ -862,6 +872,15 @@
                                                    <!--(<t t-esc="app.preference_ids[0].program_id.code"/>)-->
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                            <div class="col col-4 borders" style="text-align:left;">
+                                                Last Degree
+                                            </div>
+                                            <div class="col col-8 borders" style="text-align:left;">
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-set="last_degree" t-value="len(app.applicant_academic_ids) - 1"/>
+                                                <t t-if="len(app.applicant_academic_ids)>0" t-esc="app.applicant_academic_ids[last_degree].group_specialization.name"/>
+                                            </div>
+                                        </div>
                                              <!-- <div class="row">
                                                 <div class="col col-4 borders" style="text-align:left;">
                                                     Program
