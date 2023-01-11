@@ -3,7 +3,7 @@ from . import odoocms_admission_register
 from . import odoocms_admission_application
 from . import odoocms_reject_reason
 from . import register_new_candidate
-# from . import test_series
+from . import test_series
 from . import odoocms_admission_education
 from . import odoocms_admission_degree
 from . import admission_documents
