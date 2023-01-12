@@ -19,8 +19,9 @@ class OdooCMSAdmissionApplication(models.Model):
     paid_time = fields.Char('Paid Time')
     expiry_date = fields.Date('Expiry Date', compute='_get_expiry_date',store=True)
     
-    
+    @api.depends('voucher_issued_date')
     def _get_expiry_date(self):
         for rec in self:
-            rec.expiry_date =  rec.voucher_issued_date + relativedelta(days=7)
+            if rec.voucher_issued_date:
+                rec.expiry_date =  rec.voucher_issued_date + relativedelta(days=7)
    
