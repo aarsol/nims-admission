@@ -315,7 +315,7 @@
                                             <span for="subject" class="form-label-norequired">
                                                 <t t-esc="subject"/>
  Grade:</span>
-                                            <select required="1" class="form-control" id="subject" name="subject">
+                                            <select  class="form-control" id="subject" name="subject">
                                                 <option disabled='1' selected='1' value=''>Select Grade</option>
                                                 <option value="90">A*</option>
                                                 <option value="85">A</option>
@@ -363,7 +363,7 @@
                                                 <span for="subject" class="form-label-norequired">
                                                     <t t-esc="subject"/>
  Grade:</span>
-                                                <select required="1" class="form-control" id="subject" name="subject">
+                                                <select  class="form-control" id="subject" name="subject">
                                                     <option disabled='1' selected='1' value=''>Select Grade</option>
                                                     <option value="90">A*</option>
                                                     <option value="85">A</option>
@@ -384,7 +384,7 @@
                                                 <span for="subject" class="form-label-norequired">
                                                     <t t-esc="subject"/>
  Grade:</span>
-                                                <select required="1" class="form-control" id="subject" name="subject">
+                                                <select  class="form-control" id="subject" name="subject">
                                                     <option disabled='1' selected='1' value=''>Select Grade</option>
                                                     <option value="90">A*</option>
                                                     <option value="85">A</option>

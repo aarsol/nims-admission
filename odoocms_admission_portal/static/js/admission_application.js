@@ -274,9 +274,7 @@ function on_change_test_center(id) {
                 $("#pbt").empty();
                 $("#cbt").append("<b>Test Type:</b>"+" "+"Computer Based Test"+"<br/><br/>"+"Please choose: <br/><br/>")
                 for(i=0; i < data.schedule.length;i++){
-                    $("#cbt").append(
-                      "<input type='radio' required='true'  value='"+data.schedule[i].id+"' name='test_timing' id='time"+i+"'>" + " " + "<b>Test Date:</b>"+ " " + data.schedule[i].date + "<b>Test Time:</b>" + " " + data.schedule[i].time + "<br/><br/>"
-                );
+                    $("#cbt").append("<input type='radio' required='true'  value='"+data.schedule[i].id+"' name='test_timing' id='time"+i+"'>" + " " + "<b>Test Date:</b>"+ " " + data.schedule[i].date + "<b>Test Time:</b>" + " " + data.schedule[i].time + "<br/><br/>");
            }
            } else {
                 $("#cbt").empty();
