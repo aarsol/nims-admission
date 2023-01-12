@@ -27,7 +27,7 @@ class InvoiceService(Component):
         
         invoice = self.env["odoocms.application"].sudo().search([('voucher_number', '=', params['consumer_number'])])
         if invoice:
-            inv_date = invoice.expiry
+            inv_date = invoice.expiry_date
             if invoice.fee_voucher_state in ('paid','verify') or invoice.voucher_date:
                 data = {
                     'response_Code': '00',
