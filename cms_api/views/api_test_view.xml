@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="view_api_test_tree" model="ir.ui.view">
+            <field name="name">api.test.tree</field>
+            <field name="model">api.test</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="barcode"/>
+                    <field name="name"/>
+                    <field name="invoice_date_due"/>
+                    <field name="paid_date"/>
+                    <field name="paid_time"/>
+                    <field name="amount_total"/>
+                    <field name="paid_amount"/>
+                    <field name="invoice_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_api_test" model="ir.actions.act_window">
+            <field name="name">API Test</field>
+            <field name="res_model">api.test</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add new Record
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="menu_test_api_root"
+                name="API Test"
+                web_icon="cms_api,static/description/icon.png"
+                sequence="500"/>
+
+        <menuitem
+                id="menu_test_api"
+                name="API Test"
+                action="action_api_test"
+                sequence="10"
+                parent="menu_test_api_root"/>
+
+
+    </data>
+</odoo>

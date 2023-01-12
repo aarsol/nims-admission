@@ -1,0 +1,12 @@
+cerberus
+pyquerystring
+parse-accept-language
+apispec
+marshmallow
+jsondiff
+cachetools
+marshmallow-objects
+html2text
+# wheel
+# pandas
+
