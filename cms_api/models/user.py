@@ -22,6 +22,5 @@ class OdooCMSAdmissionApplication(models.Model):
     @api.depends('voucher_issued_date')
     def _get_expiry_date(self):
         for rec in self:
-            if rec.voucher_issued_date:
-                rec.expiry_date =  rec.voucher_issued_date + relativedelta(days=7)
+            rec.expiry_date =  (rec.voucher_issued_date or date.today()) + relativedelta(days=7)
    
