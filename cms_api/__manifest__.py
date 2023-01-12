@@ -7,7 +7,6 @@
     'description': "APIs for Integration",
     'author': "AARSOL",
     'website': "http://aarsol.com",
-
     'depends': ['base', 'odoocms', 'base_rest', 'base_rest_auth_api_key','odoocms_admission'],
     'data': [
     ],
