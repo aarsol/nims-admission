@@ -25,17 +25,17 @@ class InvoiceService(Component):
             'response_Code': '02'
         }
         
-        invoice = self.env["account.move"].sudo().search([('payment_reference', '=', params['consumer_number'])])
+        invoice = self.env["odoocms.application"].sudo().search([('voucher_number', '=', params['consumer_number'])])
         if invoice:
-            inv_date = invoice.invoice_date or invoice.invoice_date_due
-            if invoice.payment_state == 'paid' or invoice.paid_date:
+            inv_date = invoice.expiry
+            if invoice.fee_voucher_state in ('paid','verify') or invoice.voucher_date:
                 data = {
                     'response_Code': '00',
-                    'consumer_Detail': invoice.partner_id.name,
+                    'consumer_Detail': invoice.name,
                     'bill_status': 'P',
                     'due_date': inv_date.strftime("%Y%m%d"),
-                    'amount_within_dueDate': '+' + (str(int(invoice.amount_total)) + "00").zfill(13),
-                    'amount_after_dueDate': '+' + (str(int(invoice.amount_total)) + "00").zfill(13),
+                    'amount_within_dueDate': '+' + (str(int(invoice.amount)) + "00").zfill(13),
+                    'amount_after_dueDate': '+' + (str(int(invoice.amount)) + "00").zfill(13),
                     'billing_month': inv_date.strftime("%y%m"),
                     'date_paid': ' ',
                     'amount_paid': ' ',
@@ -46,11 +46,11 @@ class InvoiceService(Component):
             
             data = {
                 'response_Code': '00',
-                'consumer_Detail': invoice.partner_id.name,
+                'consumer_Detail': invoice.name,
                 'bill_status': 'U',
                 'due_date': inv_date.strftime("%Y%m%d"),
-                'amount_within_dueDate': '+' + (str(int(invoice.amount_total)) + "00").zfill(13),
-                'amount_after_dueDate': '+' + (str(int(invoice.amount_total)) + "00").zfill(13),
+                'amount_within_dueDate': '+' + (str(int(invoice.amount)) + "00").zfill(13),
+                'amount_after_dueDate': '+' + (str(int(invoice.amount)) + "00").zfill(13),
                 'billing_month': inv_date.strftime("%y%m"),
                 'date_paid': ' ',
                 'amount_paid': ' ',
@@ -64,20 +64,13 @@ class InvoiceService(Component):
             }
         return data
         
-
-        # partner = order.customer_name.ljust(30)
-        # date1 = order.order_date.strftime("%Y%m%d")
-        # month = order.order_date.strftime("%y%m")  # datetime.now()
-        # amt = (str(int(order.amount)) + "00").zfill(13)
-        # res = "00" + partner + 'B' + date1 + '+' + amt + '+' + amt + month + date1 + order.transaction.rjust(18)
-        # return {"response": res}
         
     def payment(self, **params):
         """
             Update an Order
         """
-        invoice = self.env["account.move"].sudo().search([('payment_reference', '=', params['consumer_number'])])
-        tran_auth_id = self.env["account.move"].sudo().search([('tran_auth_id', '=', params['tran_auth_id'])])
+        invoice = self.env["odoocms.application"].sudo().search([('voucher_number', '=', params['consumer_number'])])
+        tran_auth_id = self.env["odoocms.application"].sudo().search([('tran_auth_id', '=', params['tran_auth_id'])])
         
         if invoice and invoice.paid_date:
             data = {
@@ -114,9 +107,6 @@ class InvoiceService(Component):
             'reserved': ' '
         }
         return data
-
-    #, Transaction_Auth_Id, Transaction_Amount, Tran_Date, Tran_Time, Bank_Mnemonic
-   
 
     def _get(self, _id):
         return self.env["nrlp"].sudo().browse(_id)
