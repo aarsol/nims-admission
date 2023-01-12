@@ -25,7 +25,7 @@ class InvoiceService(Component):
             'response_Code': '02'
         }
         
-        invoice = self.env["odoocms.application"].sudo().search([('voucher_number', '=', params['consumer_number'])])
+        invoice = self.env["odoocms.application"].sudo().search([('application_no', '=', params['consumer_number'])])
         if invoice:
             inv_date = invoice.expiry_date
             if invoice.fee_voucher_state in ('paid','verify') or invoice.voucher_date:
@@ -69,7 +69,7 @@ class InvoiceService(Component):
         """
             Update an Order
         """
-        invoice = self.env["odoocms.application"].sudo().search([('voucher_number', '=', params['consumer_number'])])
+        invoice = self.env["odoocms.application"].sudo().search([('application_no', '=', params['consumer_number'])])
         tran_auth_id = self.env["odoocms.application"].sudo().search([('tran_auth_id', '=', params['tran_auth_id'])])
         
         if invoice and invoice.paid_date:
