@@ -2,7 +2,8 @@ import pdb
 
 from odoo.addons.base_rest.components.service import to_bool, to_int
 from odoo.addons.component.core import Component
-from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from datetime import datetime, date
 
 
 class InvoiceService(Component):
@@ -27,7 +28,7 @@ class InvoiceService(Component):
         
         invoice = self.env["odoocms.application"].sudo().search([('application_no', '=', params['consumer_number'])])
         if invoice:
-            inv_date = invoice.expiry_date
+            inv_date = invoice.expiry_date or date.today() + relativedelta(days=7)
             if invoice.fee_voucher_state in ('paid','verify') or invoice.voucher_date:
                 data = {
                     'response_Code': '00',
