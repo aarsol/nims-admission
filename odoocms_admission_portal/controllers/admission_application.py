@@ -810,6 +810,7 @@ class RegisterApplication(Controller):
     def degree_specializations(self, **kw):
 
         try:
+            # pdb.set_trace()
             degree_id = int(kw.get('degree_id'))
 
             specilizations = request.env['odoocms.admission.degree'].sudo().search(

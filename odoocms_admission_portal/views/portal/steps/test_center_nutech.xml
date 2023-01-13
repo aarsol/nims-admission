@@ -53,24 +53,24 @@
 
 
                     <div class="mb-1 col-md-12 ml-2 mb-0 text-center">
-                        <hr class='mt-0 mb-0'/>
-                        <button  class="btn btn-primary mt-2" id="test_center_lock" t-if="application_id.center_id"
+                        <hr class='mt-2 mb-2'/>
+                        <!--<button  class="btn btn-primary mt-2" id="test_center_lock" t-if="application_id.center_id"
                                                         t-att-disabled="application_id.confirm_test_center"
                                                         t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
-                                                </button>
+                                                </button>-->
                                                 <button class="btn btn-primary" id="test_center_lock" t-if="not application_id.center_id"
 
                                                         t-att-disabled="application_id.confirm_test_center"
                                                         t-attf-onclick="on_change_test_time({{selected_discipline}})">Confirm Selection
                                                 </button>
-                                                <a t-if="application_id.center_id and application_id.confirm_test_center" class="btn btn-light o_download_btn"
+                                                <a id="admit_card" t-att-style="'display:block' if application_id.confirm_test_center else 'display:none'"  class="btn btn-light o_download_btn"
                                                    href="/download/admit/card/nutech">
                                                     Download Admit Card
                                                 </a>
-                                                <a id="admit_card_down" t-if="not application_id.confirm_test_center" style="display:'none'"  class="btn btn-light o_download_btn"
+                                                <!--<a id="admit_card_down" t-if="not application_id.confirm_test_center" style="display:'none'"  class="btn btn-light o_download_btn"
                                                    href="/download/admit/card/nutech">
                                                     Download Admit Card
-                                                </a>
+                                                </a>-->
                     </div>
 
 
@@ -112,12 +112,12 @@
 
                                                             <br/>
                                                             <div t-if="application_id.slot_ids" >
-                                                              <t t-if="application_id.slot_ids[0].id == time['id'] and application_id.center_id.id == test_center_disc.id">
+                                                              <!--<t t-if="application_id.slot_ids[0].id == time['id'] and application_id.center_id.id == test_center_disc.id">-->
                                                                <!--t-attf-name="test_timing_{{time['discipline'].id}}"-->
                                                                 <input type="radio" required="true"
                                                                        t-att-disabled="application_id.confirm_test_center"
-                                                                       t-if="time['id'] in selected_slots"
-                                                                       checked="true"
+                                                                       
+                                                                       t-att-checked="application_id.slot_ids[0].id == time['id'] and application_id.center_id.id == test_center_disc.id"
                                                                        t-att-value="time['id']"
                                                                        t-attf-name="test_timing"
                                                                        t-attf-id="time_{{time['id']}}">
@@ -128,7 +128,7 @@
                                                                      <!--Discipline:
                                                                     <t t-esc="time['discipline'].name"/>-->
                                                                 </input>
-                                                              </t>
+                                                             <!-- </t>-->
                                                             </div>
                                                                 <br/>
                                                                 <!-- t-attf-name="test_timing_{{time['discipline'].id}}"-->

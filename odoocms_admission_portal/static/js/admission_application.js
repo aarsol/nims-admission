@@ -314,7 +314,10 @@ function on_change_test_time(selected_disciplines){
       success: function(data)
       {
            $("#test_center_lock").show();
+
            confirm_test_center();
+           $("#admit_card").show();
+
       },
 	  error: function()
 	  {
@@ -1568,7 +1571,8 @@ $(document).ready(function () {
 
             return false
         } else if (degree_name == 'A-Level' || degree_name == 'alevel' || degree_name == 'a-level') {
-            $('#specialization_id').parent().parent().hide()
+//            $('#specialization_id').parent().parent().hide()
+            $('#specialization_id').parent().parent().show()
             $('#result_status').parent().hide()
             $('#board').parent().parent().hide()
             $('#roll_no').parent().parent().hide()
@@ -1576,7 +1580,7 @@ $(document).ready(function () {
             $('#alevel_calculator_btn').show()
             $('#obtained_marks').attr('readonly', '1')
             $('#total_marks').attr('readonly', '1')
-            return false
+            //return false
         } else {
             $('#specialization_id').parent().parent().show()
             $('#result_status').parent().show()
@@ -1806,11 +1810,17 @@ $(document).ready(function () {
     })
     $('#calculate_olevel').on('submit', function (e) {
         e.preventDefault()
+
         var subject_marks = 0
+        var total_marks = 0
         $('#calculate_olevel').find('select option:selected').each(function (index, element) {
+        if ($(element).val() > 0){
             subject_marks += parseInt($(element).val())
+            total_marks += 100
+            }
+           // subject_marks += parseInt($(element).val())
         })
-        total_marks = $('#calculate_olevel').find('select').length * 100
+       // total_marks = $('#calculate_olevel').find('select').length * 100
         obtained_marks = subject_marks
         percentage = ((obtained_marks / total_marks) * 100).toFixed(1)
         $('#addeducation').find('#total_marks').val(total_marks)
@@ -1825,11 +1835,20 @@ $(document).ready(function () {
     $('#calculate_alevel').on('submit', function (e) {
         e.preventDefault()
         var subject_marks = 0
+        total_marks = 0
+
 
         $('#calculate_alevel').find('select option:selected').each(function (index, element) {
+            if ($(element).val() > 0){
             subject_marks += parseInt($(element).val())
+            total_marks += 100
+            }
+
         })
-        total_marks = $('#calculate_alevel').find('select').length * 100
+        console.log('fdfgd');
+        console.log(total_marks);
+
+//        total_marks = $('#calculate_alevel').find('select').length * 100
         obtained_marks = subject_marks
         percentage = ((obtained_marks / total_marks) * 100).toFixed(1)
         $('#addeducation').find('#total_marks').val(total_marks)
